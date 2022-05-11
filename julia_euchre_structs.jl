@@ -1,5 +1,6 @@
-module main_structures
-# export Player, Human, Simple, betterHand
+module euchre_structures
+# another way to do it
+# export Player, Human, Simple, betterHand, smaller_or_bigger_hand
 
 abstract type Player end
 
@@ -13,7 +14,7 @@ mutable struct Human <: Player
     function Human(name="Default", hand::Array=[0,0,0,0])
         # first card 0, not allowed, means no hand was passed in, just default:
         # println(hand)
-        # 1-indexed
+        # 1-indexed, unlike C++ and Python
         if hand[1] == 0
             for i = 1:4
                 # println(typeof(hand[i]))
@@ -48,6 +49,17 @@ mutable struct Simple <: Player
 
 end
 
+function get_hand_size(player::Player)
+    # don't have to have return statement here... but can, for readibility, for example
+    return size(player.hand)[1]
+end
+
+# example of getter for attribute value (similar to how it would be for class in C++)
+function get_cards_hand(player::Player)
+    # don't have to have return statement here... but can, for readibility, for example
+    return hand
+end
+
 function betterHand(hand1::Array, hand2::Array)
     sum1 = 0
     for i = 1:size(hand1)[1]
@@ -61,6 +73,19 @@ function betterHand(hand1::Array, hand2::Array)
     # println(sum1)
     # println(sum2)
     sum1 > sum2
+end
+
+# now this method to that use Player class
+function smaller_or_bigger_hand(player1::Player, player2::Player)
+    # println(size(player1.hand)[1])
+    # println(size(player2.hand)[1])
+    if size(player1.hand)[1] < size(player2.hand)[1]
+        return "It is a smaller hand, there are less cards in this hand for this player compared to the other player's."
+    elseif size(player1.hand)[1] == size(player2.hand)[1]
+        return "It is a hand of the same size, there are the same amount of cards in this hand for this playercompared to the other player's."
+    else
+        return "It is a bigger hand, there are more cards in this hand for this player compared to the other player's."
+    end
 end
 
 end
